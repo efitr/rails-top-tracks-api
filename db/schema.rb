@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_08_202839) do
+ActiveRecord::Schema.define(version: 2018_11_08_201920) do
 
   create_table "top_tracks", force: :cascade do |t|
     t.string "track_name"
