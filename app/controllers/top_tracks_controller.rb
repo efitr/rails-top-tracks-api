@@ -1,17 +1,39 @@
 require 'rspotify'
 
 class TopTracksController < ApplicationController
+  #this is calling a function stablished before
   before_action :set_top_track, only: [:show, :edit, :update, :destroy]
+
+  ##Notes
+  #   constraints - track_name, :album_name, :personal_ranking
+  #   
+  #
 
   # GET /top_tracks
   # GET /top_tracks.json
   def index
+    #this is getting all the top tracks, 
     @top_tracks = TopTrack.all
   end
 
+  ## This is been affected by before_action
   # GET /top_tracks/1
   # GET /top_tracks/1.json
   def show
+    # Here I'm making this call
+    # This is calling to see the top track of a certain artist, what else could it show
+    # the other top tracks
+    # This is getting the information of an specific 
+    @top_track = RSpotify::Track.search(':id')
+    respond_to do |format|
+      if @top_track.show
+        format.html { redirect_to @top_track, notice: 'Top track was successfully found and retrieved.' }
+        format.json { render :show, status: :get, location: @top_track }
+      else
+        format.html { render :show }
+        format.json { render json: @top_track.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   # GET /top_tracks/new
@@ -19,6 +41,7 @@ class TopTracksController < ApplicationController
     @top_track = TopTrack.new
   end
 
+  ## This is been affected by before_action
   # GET /top_tracks/1/edit
   def edit
   end
@@ -39,6 +62,7 @@ class TopTracksController < ApplicationController
     end
   end
 
+  ## This is been affected by before_action
   # PATCH/PUT /top_tracks/1
   # PATCH/PUT /top_tracks/1.json
   def update
@@ -53,6 +77,7 @@ class TopTracksController < ApplicationController
     end
   end
 
+  ## This is been affected by before_action
   # DELETE /top_tracks/1
   # DELETE /top_tracks/1.json
   def destroy
